@@ -55,6 +55,8 @@ jobs:
           mkdir build
           cd build
 
+          export CUDAFLAGS="--expt-relaxed-constexpr"
+
           cmake .. \
             -DWALBERLA_DIR="${BASEDIR}/walberla" \
             -DWALBERLA_PYBIND11_SOURCE_DIR="${BASEDIR}/pybind11" \
