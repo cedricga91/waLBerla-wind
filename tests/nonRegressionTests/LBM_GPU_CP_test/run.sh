@@ -1,3 +1,4 @@
 #!/bin/bash
-TurbineLBM_GPU_CP testCase.prm
+TARGET=${1:-TurbineLBM_GPU_CP}
+"$TARGET" testCase.prm
 python postprocess.py

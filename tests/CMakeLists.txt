@@ -1,2 +1,3 @@
-
 add_subdirectory(unitTests)
+add_subdirectory(physicalValidation)
+add_subdirectory(nonRegressionTests)
