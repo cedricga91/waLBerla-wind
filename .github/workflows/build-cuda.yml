@@ -49,7 +49,7 @@ jobs:
           uv --version
           uv python install 3.12
           uv venv --clear --python 3.12
-          uv pip install pystencils~=1.3 lbmpy~=1.3 jinja2
+          uv pip install pystencils~=1.3 lbmpy~=1.3 jinja2 pyvista scipy
           source .venv/bin/activate
 
           mkdir build
@@ -59,14 +59,11 @@ jobs:
             -DWALBERLA_DIR="${BASEDIR}/walberla" \
             -DWALBERLA_PYBIND11_SOURCE_DIR="${BASEDIR}/pybind11" \
             -DCMAKE_PYBIND11_SOURCE_DIR="${BASEDIR}/pybind11" \
-            -DPython_ROOT_DIR="$(realpath ${BASEDIR}/uv/python/cpython-3.12-linux-x86_64-gnu)" \
+            -DPython_ROOT_DIR="$(realpath `which python`)" \
             -DWALBERLA_DOUBLE_ACCURACY="OFF" \
             -DWALBERLA_BUILD_WITH_CODEGEN="ON" \
             -DWALBERLA_BUILD_WITH_PYTHON="ON" \
             -DWALBERLA_BUILD_WITH_CUDA="ON" \
             -DCMAKE_CUDA_ARCHITECTURES="89;90" 2>&1 | tee ./cmake.log
 
-          make -j $(nproc --all) 2>&1 | tee ./build.log
-
-          cd apps/GeneratedApp_cpu_staticRefinement
           make -j $(nproc --all) 2>&1 | tee ./build.log
