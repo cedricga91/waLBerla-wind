@@ -64,8 +64,9 @@ jobs:
             -DWALBERLA_BUILD_WITH_CODEGEN="ON" \
             -DWALBERLA_BUILD_WITH_PYTHON="ON" \
             -DWALBERLA_BUILD_WITH_CUDA="ON" \
-            -DCMAKE_CUDA_ARCHITECTURES="89;90" | tee ./cmake.log
+            -DCMAKE_CUDA_ARCHITECTURES="89;90" 2>&1 | tee ./cmake.log
+
+          make -j $(nproc --all) 2>&1 | tee ./build.log
 
           cd apps/GeneratedApp_cpu_staticRefinement
-          LC_ALL=en_US.UTF-8 \
-            make MAKEFLAGS='-j8' VERBOSE=0 -j8 2>&1 | tee ./build.log
+          make -j $(nproc --all) 2>&1 | tee ./build.log
