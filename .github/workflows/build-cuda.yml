@@ -76,4 +76,4 @@ jobs:
           export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:$LD_LIBRARY_PATH
           source .venv/bin/activate
           cd build
-          ctest -L CPU --output-on-failure
+          ctest --output-on-failure
