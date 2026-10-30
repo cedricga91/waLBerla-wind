@@ -41,7 +41,7 @@ jobs:
 
           BASEDIR=${PWD}
 
-          git clone -b a8f8f183106e2ea415c3607f9ac693211d74fcab https://github.com/lssfau/walberla.git
+          git clone https://github.com/lssfau/walberla.git
           cd walberla
           git switch --detach a8f8f183106e2ea415c3607f9ac693211d74fcab
           cd ..
