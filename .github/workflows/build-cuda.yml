@@ -41,7 +41,7 @@ jobs:
 
           BASEDIR=${PWD}
 
-          git clone https://github.com/lssfau/walberla.git
+          git clone -b a8f8f183106e2ea415c3607f9ac693211d74fcab https://github.com/lssfau/walberla.git
           git clone -b v2.13.6 https://github.com/pybind/pybind11.git
 
           export PATH="${HOME}/.local/bin:${PATH}"
@@ -49,7 +49,7 @@ jobs:
           uv --version
           uv python install 3.12
           uv venv --clear --python 3.12
-          uv pip install pystencils~=1.3 lbmpy~=1.3 jinja2 pyvista scipy
+          uv pip install pystencils==1.3 lbmpy==1.3 jinja2 pyvista scipy
           source .venv/bin/activate
 
           mkdir build
