@@ -1,4 +1,4 @@
-name: Build waLBerla-wind with CUDA
+name: Build and test waLBerla-wind with CUDA
 
 on:
   push:
@@ -74,7 +74,6 @@ jobs:
         run: |
           export PATH=/usr/lib64/openmpi/bin:$PATH
           export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:$LD_LIBRARY_PATH
-
+          source .venv/bin/activate
           cd build
-
-          ctest -L CPU
+          ctest -L CPU --output-on-failure
