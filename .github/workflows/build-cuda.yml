@@ -20,7 +20,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install base tools, compilers, Git, CMake, XZ, OpenMPI
+      - name: Install packages
         run: |
           dnf install -y epel-release && \
           dnf install -y \
@@ -34,7 +34,7 @@ jobs:
             openmpi-devel && \
           dnf clean all
 
-      - name: Setup environment and build waLBerla-wind
+      - name: Build
         run: |
           export PATH=/usr/lib64/openmpi/bin:$PATH
           export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:$LD_LIBRARY_PATH
@@ -69,3 +69,12 @@ jobs:
             -DCMAKE_CUDA_ARCHITECTURES="89;90" 2>&1 | tee ./cmake.log
 
           make -j $(nproc --all) 2>&1 | tee ./build.log
+
+      - name: Test
+        run: |
+          export PATH=/usr/lib64/openmpi/bin:$PATH
+          export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:$LD_LIBRARY_PATH
+
+          cd build
+
+          ctest -L CPU
