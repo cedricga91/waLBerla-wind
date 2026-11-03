@@ -85,4 +85,4 @@ jobs:
           export OMPI_ALLOW_RUN_AS_ROOT_CONFIRM=1
           export OMPI_MCA_rmaps_base_oversubscribe=1
           export FI_PROVIDER=sockets
-          ctest --output-on-failure -E "^NormalsOfSineTest$"
+          ctest --output-on-failure --timeout 60
