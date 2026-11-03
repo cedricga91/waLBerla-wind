@@ -24,37 +24,41 @@ jobs:
         run: |
           dnf install -y epel-release && \
           dnf install -y \
-            glibc-langpack-en \
+            cmake \
+            diffutils \
             gcc \
             gcc-c++ \
             git \
-            cmake \
-            xz \
-            which \
+            glibc-langpack-en \
             openmpi \
-            openmpi-devel && \
+            openmpi-devel \
+            which \
+            xz && \
           dnf clean all
 
-      - name: Build
+      - name: Install dependencies
         run: |
-          export PATH=/usr/lib64/openmpi/bin:$PATH
-          export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:$LD_LIBRARY_PATH
-
-          BASEDIR=${PWD}
-
+          # walberla
           git clone https://github.com/lssfau/walberla.git
           cd walberla
           git switch --detach a8f8f183106e2ea415c3607f9ac693211d74fcab
           cd ..
 
+          # pybind
           git clone -b v2.13.6 https://github.com/pybind/pybind11.git
 
+          # pystencils and lbmpy
           export PATH="${HOME}/.local/bin:${PATH}"
           curl -LsSf https://astral.sh/uv/install.sh | sh
           uv --version
           uv python install 3.12
           uv venv --clear --python 3.12
           uv pip install pystencils==1.4 lbmpy==1.4 jinja2 pyvista scipy
+
+      - name: Build
+        run: |
+          export PATH=/usr/lib64/openmpi/bin:$PATH
+          export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:$LD_LIBRARY_PATH
           source .venv/bin/activate
 
           mkdir build
@@ -63,9 +67,9 @@ jobs:
           export CUDAFLAGS="--expt-relaxed-constexpr"
 
           cmake .. \
-            -DWALBERLA_DIR="${BASEDIR}/walberla" \
-            -DWALBERLA_PYBIND11_SOURCE_DIR="${BASEDIR}/pybind11" \
-            -DCMAKE_PYBIND11_SOURCE_DIR="${BASEDIR}/pybind11" \
+            -DWALBERLA_DIR="${{ github.workspace }}/walberla" \
+            -DWALBERLA_PYBIND11_SOURCE_DIR="${{ github.workspace }}/pybind11" \
+            -DCMAKE_PYBIND11_SOURCE_DIR="${{ github.workspace }}/pybind11" \
             -DPython_ROOT_DIR="$(realpath `which python`)" \
             -DWALBERLA_DOUBLE_ACCURACY="OFF" \
             -DWALBERLA_BUILD_WITH_CODEGEN="ON" \
@@ -80,9 +84,12 @@ jobs:
           export PATH=/usr/lib64/openmpi/bin:$PATH
           export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:$LD_LIBRARY_PATH
           source .venv/bin/activate
+
           cd build
+
           export OMPI_ALLOW_RUN_AS_ROOT=1
           export OMPI_ALLOW_RUN_AS_ROOT_CONFIRM=1
           export OMPI_MCA_rmaps_base_oversubscribe=1
           export FI_PROVIDER=sockets
+
           ctest --output-on-failure --timeout 60
