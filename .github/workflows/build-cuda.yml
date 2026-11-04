@@ -57,10 +57,10 @@ jobs:
 
       - name: Build
         run: |
-          BASEDIR=${PWD}
+          BASEDIR="${PWD}"
 
-          export PATH=/usr/lib64/openmpi/bin:$PATH
-          export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:$LD_LIBRARY_PATH
+          export PATH="/usr/lib64/openmpi/bin:${PATH}"
+          export LD_LIBRARY_PATH="/usr/lib64/openmpi/lib:${LD_LIBRARY_PATH}"
           source .venv/bin/activate
 
           mkdir build
@@ -68,29 +68,22 @@ jobs:
 
           export CUDAFLAGS="--expt-relaxed-constexpr"
 
-          # Workaround to disable CUDA
-          sed -i '/gpu/Id' ../apps/CMakeLists.txt
-          sed -i '/gpu/Id' ../tests/nonRegressionTests/CMakeLists.txt
-
           cmake .. \
             -DWALBERLA_DIR="${BASEDIR}/walberla" \
             -DWALBERLA_PYBIND11_SOURCE_DIR="${BASEDIR}/pybind11" \
-            -DCMAKE_PYBIND11_SOURCE_DIR="${BASEDIR}/pybind11" \
             -DPython_ROOT_DIR="$(realpath `which python`)" \
             -DWALBERLA_DOUBLE_ACCURACY="OFF" \
             -DWALBERLA_BUILD_WITH_CODEGEN="ON" \
             -DWALBERLA_BUILD_WITH_PYTHON="ON" \
-            -DWALBERLA_BUILD_WITH_CUDA="OFF" 2>&1 | tee ./cmake.log
-            # Enable CUDA
-            #-DWALBERLA_BUILD_WITH_CUDA="ON" \
-            #-DCMAKE_CUDA_ARCHITECTURES="89;90" 2>&1 | tee ./cmake.log
+            -DWALBERLA_BUILD_WITH_CUDA="ON" \
+            -DCMAKE_CUDA_ARCHITECTURES="89;90" 2>&1 | tee ./cmake.log
 
           make -j $(nproc --all) 2>&1 | tee ./build.log
 
       - name: Test
         run: |
-          export PATH=/usr/lib64/openmpi/bin:$PATH
-          export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:$LD_LIBRARY_PATH
+          export PATH="/usr/lib64/openmpi/bin:${PATH}"
+          export LD_LIBRARY_PATH="/usr/lib64/openmpi/lib:${LD_LIBRARY_PATH}"
           source .venv/bin/activate
 
           cd build
