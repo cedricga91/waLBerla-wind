@@ -68,6 +68,8 @@ jobs:
 
           export CUDAFLAGS="--expt-relaxed-constexpr"
 
+          sed -i '/gpu/Id' ../apps/CMakeLists.txt
+
           cmake .. \
             -DWALBERLA_DIR="${BASEDIR}/walberla" \
             -DWALBERLA_PYBIND11_SOURCE_DIR="${BASEDIR}/pybind11" \
