@@ -233,6 +233,7 @@ namespace turbine_core {
                 }
             }
 
+#ifdef WALBERLA_BUILD_WITH_GPU_SUPPORT
             HOST_PREFIX void synchroniseGpuStreams()  {
                 for (auto &turbine: turbines_) {
                     if(turbine) {
@@ -240,6 +241,7 @@ namespace turbine_core {
                     }
                 }
             }
+#endif
 
 
             HOST_PREFIX void writeForceOutput( walberla::IBlock * block, const uint_t startingTimeStep = uint_t(0),

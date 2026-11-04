@@ -19,8 +19,10 @@
 
 #include "aerodynamics/AirfoilPolar.h"
 #include "conversion/Conversion.h"
+#ifdef WALBERLA_BUILD_WITH_GPU_SUPPORT
 #include "gpu/ErrorChecking.h"
 #include "gpu/GPUWrapper.h"
+#endif
 #include "wind_turbine_core/ProjectDefines.h"
 #include "wind_turbine_core/math/Vector3.h"
 
@@ -229,6 +231,7 @@ namespace turbine_core {
                 return cpuDescription;
             }
 
+#ifdef WALBERLA_BUILD_WITH_GPU_SUPPORT
             template<bool isGPU>
             HOST_PREFIX Description createFinalDescription(const Description & cpuDescription, char(*)[isGPU == true] = nullptr) {
                 auto & nPoints = cpuDescription.nPoints;
@@ -262,6 +265,8 @@ namespace turbine_core {
 
                 return gpuDescription;
             }
+#endif
+
 
             template<bool isGPU>
             HOST_PREFIX void freeDescription(Description & description, char(*)[isGPU == false] = nullptr) {
@@ -276,6 +281,7 @@ namespace turbine_core {
                 free(description.airfoilPolars);
             }
 
+#ifdef WALBERLA_BUILD_WITH_GPU_SUPPORT
             template<bool isGPU>
             HOST_PREFIX void freeDescription(Description & description, char(*)[isGPU == true] = nullptr) {
                 free(description.positions);
@@ -288,7 +294,10 @@ namespace turbine_core {
                 gpuFree(description.widths);
                 gpuFree(description.airfoilPolars);
             }
+#endif
 
+
+#ifdef WALBERLA_BUILD_WITH_GPU_SUPPORT
 #if defined(__NVCC__) || defined(__HIP__)
 
             HOST_PREFIX void createAirfoilPolarsOnGPU( aerodynamics::AirfoilPolar * d_airfoilPolar, aerodynamics::AirfoilPolar::Interpolator_T * const interpolatorCpu ) {
@@ -323,6 +332,7 @@ namespace turbine_core {
             HOST_PREFIX void deleteAirfoilPolars( aerodynamics::AirfoilPolar *) {
                 WALBERLA_ABORT("Not implemented.")
             }
+#endif
 #endif
 
         };
