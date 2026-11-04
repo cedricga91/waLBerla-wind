@@ -1,4 +1,4 @@
-name: Build and test waLBerla-wind with CUDA
+name: Build and test waLBerla-wind without CUDA
 
 on:
   push:
