@@ -19,8 +19,10 @@
 
 #include "aerodynamics/AirfoilPolar.h"
 #include "conversion/Conversion.h"
+#ifdef WALBERLA_BUILD_WITH_GPU_SUPPORT
 #include "gpu/ErrorChecking.h"
 #include "gpu/GPUWrapper.h"
+#endif
 #include "wind_turbine_core/ProjectDefines.h"
 #include "wind_turbine_core/math/Vector3.h"
 
