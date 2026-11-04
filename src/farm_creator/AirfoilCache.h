@@ -268,14 +268,6 @@ namespace turbine_core {
 #endif
 
 
-                free(cpuDescription.positions);
-                free(cpuDescription.angles);
-                free(cpuDescription.widths);
-                free(cpuDescription.airfoilPolars);
-
-                return gpuDescription;
-            }
-
             template<bool isGPU>
             HOST_PREFIX void freeDescription(Description & description, char(*)[isGPU == false] = nullptr) {
                 free(description.positions);
