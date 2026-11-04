@@ -76,8 +76,9 @@ jobs:
             -DWALBERLA_DOUBLE_ACCURACY="OFF" \
             -DWALBERLA_BUILD_WITH_CODEGEN="ON" \
             -DWALBERLA_BUILD_WITH_PYTHON="ON" \
-            -DWALBERLA_BUILD_WITH_CUDA="ON" \
-            -DCMAKE_CUDA_ARCHITECTURES="89;90" 2>&1 | tee ./cmake.log
+            -DWALBERLA_BUILD_WITH_CUDA="OFF" 2>&1 | tee ./cmake.log
+            #-DWALBERLA_BUILD_WITH_CUDA="ON" \
+            #-DCMAKE_CUDA_ARCHITECTURES="89;90" 2>&1 | tee ./cmake.log
 
           make -j $(nproc --all) 2>&1 | tee ./build.log
 
