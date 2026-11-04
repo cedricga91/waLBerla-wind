@@ -80,7 +80,6 @@ jobs:
             -DWALBERLA_DOUBLE_ACCURACY="OFF" \
             -DWALBERLA_BUILD_WITH_CODEGEN="ON" \
             -DWALBERLA_BUILD_WITH_PYTHON="ON" \
-            # Disable CUDA
             -DWALBERLA_BUILD_WITH_CUDA="OFF" 2>&1 | tee ./cmake.log
             # Enable CUDA
             #-DWALBERLA_BUILD_WITH_CUDA="ON" \
