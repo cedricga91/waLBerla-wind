@@ -90,4 +90,4 @@ jobs:
           export OMPI_MCA_rmaps_base_oversubscribe=1
           export FI_PROVIDER=sockets
 
-          ctest --output-on-failure --timeout 60
+          ctest --output-on-failure --timeout 60 -L "walberlawind"

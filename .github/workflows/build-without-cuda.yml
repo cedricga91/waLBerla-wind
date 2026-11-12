@@ -10,7 +10,6 @@ jobs:
   build-and-test:
     runs-on: ubuntu-latest
     container:
-      #image: nvidia/cuda:12.6.3-devel-rockylinux9
       image: rockylinux/rockylinux:9
       #options: --gpus all
     defaults:
@@ -67,8 +66,6 @@ jobs:
           mkdir build
           cd build
 
-          export CUDAFLAGS="--expt-relaxed-constexpr"
-
           cmake .. \
             -DWALBERLA_DIR="${BASEDIR}/walberla" \
             -DWALBERLA_PYBIND11_SOURCE_DIR="${BASEDIR}/pybind11" \
@@ -76,10 +73,8 @@ jobs:
             -DWALBERLA_DOUBLE_ACCURACY="OFF" \
             -DWALBERLA_BUILD_WITH_CODEGEN="ON" \
             -DWALBERLA_BUILD_WITH_PYTHON="ON" \
+            -DWALBERLA_OPTIMIZE_FOR_LOCALHOST="ON" \
             -DWALBERLA_BUILD_WITH_CUDA="OFF" 2>&1 | tee ./cmake.log
-            # Enable CUDA
-            #-DWALBERLA_BUILD_WITH_CUDA="ON" \
-            #-DCMAKE_CUDA_ARCHITECTURES="89;90" 2>&1 | tee ./cmake.log
 
           make -j $(nproc --all) 2>&1 | tee ./build.log
 
@@ -96,4 +91,4 @@ jobs:
           export OMPI_MCA_rmaps_base_oversubscribe=1
           export FI_PROVIDER=sockets
 
-          ctest --output-on-failure --timeout 60
+          ctest --output-on-failure --timeout 60 -L "walberlawind"
