@@ -73,7 +73,7 @@ jobs:
             -DWALBERLA_DOUBLE_ACCURACY="OFF" \
             -DWALBERLA_BUILD_WITH_CODEGEN="ON" \
             -DWALBERLA_BUILD_WITH_PYTHON="ON" \
-            -DWALBERLA_OPTIMIZE_FOR_LOCALHOST="ON" \
+            -DWALBERLA_OPTIMIZE_FOR_LOCALHOST="OFF" \
             -DWALBERLA_BUILD_WITH_CUDA="OFF" 2>&1 | tee ./cmake.log
 
           make -j $(nproc --all) 2>&1 | tee ./build.log
