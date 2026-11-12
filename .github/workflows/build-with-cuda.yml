@@ -1,9 +1,6 @@
-name: Build and test waLBerla-wind with CUDA
+name: Build and test with CUDA
 
 on:
-  push:
-    branches: [ main ]
-  pull_request:
   workflow_dispatch:
 
 jobs:
